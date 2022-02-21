@@ -2,6 +2,7 @@
 
 menu::menu(/* args */)
 {
+    
     std::cout << "MENU INITIALIZED" << std::endl;
 }
 
@@ -24,28 +25,147 @@ void menu::printName(std::string name){
     std::cout << " " "[ " << name << " ]" << std::endl;
 }
 
-void menu::dialog(std::string words){
-    // TODO:
+void menu::chopString(const std::string &str, std::vector<std::string> &output){
+    // Got it from http://www.cplusplus.com/forum/beginner/99171/#msg533234 
+    std::string::size_type start = 0; // Where to start
+    std::string::size_type last = str.find_first_of(" "); // Finds the first space
+
+    // npos means that the find_first_of wasn't able to find what it was looking for
+    // in this case it means it couldn't find another space so we are at the end of the
+    // words in the string.
+    while (last != std::string::npos)
+    {
+        // If last is greater then start we have a word ready
+        if (last > start)
+        {
+            output.push_back(str.substr(start, last - start)); // Puts the word into a vector look into how the method substr() works
+        }
+
+        start = ++last; // Reset start to the first character of the next word
+        last = str.find_first_of(" ", last); // This means find the first space and we start searching at the first character of the next word
+    }
+
+    // This will pickup the last word in the file since it won't be added to the vector inside our loop
+    output.push_back(str.substr(start));
+}
+
+void menu::checkWord(const std::string &str, int currentCharsOnLine){
+
+}
+
+void menu::dialog(std::string string){
+    // TODO [X]:
         // Check if the next word is longer than what we have. 
         // int currentLineCharacterAmount
         // int charSpaceLeft = charWidth-currentLineCharacterAmount-2;
         // str nextWord = str.charsUntillChar(' ');
         // int nextWordLength nextWord.length();
         // 
+
+    // TODO [ ]:    
+        // MAKE THE TEXT BOLD OR A DIFFERENT COLOR
+    
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+
+    std::vector<std::string> words;
+    chopString(string, words); // makes a list
+
+    int charLinePoint = 0;
+    int charPoint = 0;
+
     std::cout << " ";
-    for (size_t i = 0; i < words.length(); i++)
+    for (size_t i = 0; i < words.size(); i++)
     {
-        //TODO:
-            // Make a function that checks if the next word fits
-            // if it fits, print it out, if not. make a new line.
-        if ((i%(charWidth-2)) == 0)
+        
+        if (charLinePoint + words[i].length() >= charWidth)
         {
             std::cout << "\n ";
+            charLinePoint = 1;
         }
+
+        std::string tempStr = words[i];
         
-        std::cout << words.at(i);
+        for (size_t n = 0; n < words[i].length(); n++)
+        {
+            char tempChar = tempStr[n];
+            std::cout << tempChar;
+            std::cout.flush();
+
+            srand((time_t)ts.tv_nsec);
+            
+            // int randNumb = (rand()%30);
+            // usleep(150);
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(20+(rand()%30)) );
+            charLinePoint++;;
+            charPoint++;
+        }
+        std::cout << " ";
+        charLinePoint++;
+        charPoint++;
     }
     std::cout << std::endl;    
+
+    std::cout << std::endl;   
+    //words.clear(); 
+}
+
+void menu::dialogTwo(std::string string){
+    
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+
+    std::vector<std::string> words;
+    chopString(string, words); // makes a list
+
+    int charLinePoint = 0;
+    int charPoint = 0;
+    // TODO:
+        /*
+        At every std::cout <<
+        Make it strToPrint +=
+
+        I'm gonna print it out every time to make the "UI" slowly expand pr line.
+        */
+    // string
+    std::system("clear");
+    std::cout << " ";
+    for (size_t i = 0; i < words.size(); i++)
+    {
+        
+        if (charLinePoint + words[i].length() >= charWidth)
+        {
+            std::cout << "\n ";
+            charLinePoint = 1;
+        }
+
+        std::string tempStr = words[i];
+        
+        for (size_t n = 0; n < words[i].length(); n++)
+        {
+            char tempChar = tempStr[n];
+            std::cout << tempChar;
+            // TODO: Clear the console and write the BIG string here
+            std::cout.flush();
+
+            srand((time_t)ts.tv_nsec);
+            
+            // int randNumb = (rand()%30);
+            // usleep(150);
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(20+(rand()%30)) );
+            charLinePoint++;;
+            charPoint++;
+        }
+        std::cout << " ";
+        charLinePoint++;
+        charPoint++;
+    }
+    std::cout << std::endl;    
+
+    std::cout << std::endl;   
+    //words.clear(); 
 }
 
 void menu::testSeparator(std::string str){
