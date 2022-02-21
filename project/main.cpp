@@ -4,6 +4,6 @@
 
 int main(int argc, char const *argv[])
 {
-    testF(41);
+    menu Menu;
     return 0;
 }
