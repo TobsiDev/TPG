@@ -13,7 +13,7 @@ menu::~menu()
 
 // This will make a line of '=' at the top and bottom
 void menu::mainSeparator(){
-    std::cout << std::setw(charWidth) << std::setfill('=') << std::left << "" << std::endl;    
+    std::cout << std::setw(charWidth) << std::setfill(mainSepChar) << std::left << "" << std::endl;    
 }
 
 // This will make a line of ' - '
@@ -24,6 +24,21 @@ void menu::separator(std::string str){
 void menu::printName(std::string name){
     std::cout << " " "[ " << name << " ]" << std::endl;
 }
+
+std::string menu::mainSeparatorToString(){
+    std::stringstream strStream;
+    strStream << std::setw(charWidth) << std::setfill(mainSepChar) << std::left << "" << std::endl;
+    return strStream.str();
+}
+
+std::string menu::separatorToString(std::string str){
+    return "";
+}
+
+std::string menu::printNameToString(std::string name){
+    std::string str = " [ " + name + " ]" + "\n";
+    return str;
+} 
 
 void menu::chopString(const std::string &str, std::vector<std::string> &output){
     // Got it from http://www.cplusplus.com/forum/beginner/99171/#msg533234 
@@ -111,7 +126,7 @@ void menu::dialog(std::string string){
     //words.clear(); 
 }
 
-void menu::dialogTwo(std::string string){
+void menu::dialogTwo(std::string name, std::string string){
     
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -119,8 +134,10 @@ void menu::dialogTwo(std::string string){
     std::vector<std::string> words;
     chopString(string, words); // makes a list
 
+    std::string str = "";
+    std::string dialogStr = "";
     int charLinePoint = 0;
-    int charPoint = 0;
+    // int charPoint = 0;
     // TODO:
         /*
         At every std::cout <<
@@ -130,13 +147,14 @@ void menu::dialogTwo(std::string string){
         */
     // string
     std::system("clear");
-    std::cout << " ";
+    dialogStr += mainSeparatorToString();
+    dialogStr += printNameToString(name);
+    dialogStr += " ";
     for (size_t i = 0; i < words.size(); i++)
     {
-        
         if (charLinePoint + words[i].length() >= charWidth)
         {
-            std::cout << "\n ";
+            dialogStr += "\n ";
             charLinePoint = 1;
         }
 
@@ -144,28 +162,108 @@ void menu::dialogTwo(std::string string){
         
         for (size_t n = 0; n < words[i].length(); n++)
         {
-            char tempChar = tempStr[n];
-            std::cout << tempChar;
-            // TODO: Clear the console and write the BIG string here
+            /* dialogStr += tempStr[n];
+            std::system("clear");
+            str = dialogStr + "\n" + mainSeparatorToString();
+            std::cout << str;
+            std::cout.flush(); */
+
+            // add's the next char to dialogStr and prints the entire string.
+            dialogStr += tempStr[n];
+            std::system("clear");
+            std::cout << dialogStr << "\n" << mainSeparatorToString();
             std::cout.flush();
 
             srand((time_t)ts.tv_nsec);
-            
-            // int randNumb = (rand()%30);
-            // usleep(150);
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(20+(rand()%30)) );
+            std::this_thread::sleep_for(std::chrono::milliseconds(20+(rand()%30)) ); // Gives it this "typing" feal
             charLinePoint++;;
-            charPoint++;
+            // charPoint++;
         }
-        std::cout << " ";
+        dialogStr += " ";
         charLinePoint++;
-        charPoint++;
+        // charPoint++;
     }
-    std::cout << std::endl;    
+    std::system("clear");
+    std::cout << dialogStr << "\n" << mainSeparatorToString() << std::endl;   
 
-    std::cout << std::endl;   
-    //words.clear(); 
+    // std::cout << std::endl;   
+}
+
+void menu::dialogFixed(std::string fileName){
+    
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+
+    std::string str = "";
+    std::string dialogStr = "";
+    int charLinePoint = 0;
+    
+    std::string name = "", string = "";
+    std::ifstream fileStream;
+    fileStream.open(dialogLocation+fileName);
+    getline(fileStream, name, '|');
+    for (size_t i = 0; i <= 1; i++)
+    {
+        getline(fileStream, string);
+    }
+    
+    std::vector<std::string> words;
+    chopString(string, words); // makes a list
+
+    // int charPoint = 0;
+    // TODO:
+        /*
+        At every std::cout <<
+        Make it strToPrint +=
+
+        I'm gonna print it out every time to make the "UI" slowly expand pr line.
+        */
+    // string
+    std::system("clear");
+    dialogStr += mainSeparatorToString();
+    dialogStr += printNameToString(name);
+    dialogStr += " ";
+    for (size_t i = 0; i < words.size(); i++)
+    {
+        if (charLinePoint + words[i].length() >= charWidth)
+        {
+            dialogStr += "\n ";
+            charLinePoint = 1;
+        }
+
+        std::string tempStr = words[i];
+        
+        for (size_t n = 0; n < words[i].length(); n++)
+        {
+            /* dialogStr += tempStr[n];
+            std::system("clear");
+            str = dialogStr + "\n" + mainSeparatorToString();
+            std::cout << str;
+            std::cout.flush(); */
+
+            // add's the next char to dialogStr and prints the entire string.
+            dialogStr += tempStr[n];
+            std::system("clear");
+            std::cout << dialogStr << "\n" << mainSeparatorToString();
+            std::cout.flush();
+
+            srand((time_t)ts.tv_nsec);
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(20+(rand()%30)) ); // Gives it this "typing" feal
+            charLinePoint++;;
+            // charPoint++;
+        }
+        dialogStr += " ";
+        charLinePoint++;
+        // charPoint++;
+    }
+    std::system("clear");
+    std::cout << dialogStr << "\n" << mainSeparatorToString() << std::endl;   
+    std::cout << "Name: " << name << std::endl;
+    std::cout << "String: " << string << std::endl;
+
+    // std::cout << std::endl;   
 }
 
 void menu::testSeparator(std::string str){
