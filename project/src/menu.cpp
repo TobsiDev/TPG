@@ -190,15 +190,22 @@ void menu::dialogTwo(std::string name, std::string string){
     // std::cout << std::endl;   
 }
 
+// This is the "final" dialog function
 void menu::dialogFixed(std::string fileName){
-    
+    // TODO:
+        // Space or some other key makes all of the text show at once. 
+        // Or maybe just make it an option. 
+
+    // Used to get a little random time between each letter
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
 
-    std::string str = "";
-    std::string dialogStr = "";
-    int charLinePoint = 0;
-    
+    // Setting some variables. 
+    std::string dialogStr = ""; // Stores what's gonna get printed
+    int charLinePoint = 0; // Keeps track on how many characters we have left pr line
+    int linesLeft = charHeight; // Keeps track on how many lines we have left (24 is the preferred height)
+
+    // Who speaks and what's being said. It's getting it from a file
     std::string name = "", string = "";
     std::ifstream fileStream;
     fileStream.open(dialogLocation+fileName);
@@ -208,62 +215,107 @@ void menu::dialogFixed(std::string fileName){
         getline(fileStream, string);
     }
     
+    // The word list
     std::vector<std::string> words;
     chopString(string, words); // makes a list
 
-    // int charPoint = 0;
-    // TODO:
-        /*
-        At every std::cout <<
-        Make it strToPrint +=
+    //linesLeft-5; // This doesn't work for some reason?
+    //linesLeft--; linesLeft--; linesLeft--; linesLeft--; linesLeft--; // But this does?
+    linesLeft = linesLeft-5; 
 
-        I'm gonna print it out every time to make the "UI" slowly expand pr line.
-        */
-    // string
     std::system("clear");
     dialogStr += mainSeparatorToString();
     dialogStr += printNameToString(name);
     dialogStr += " ";
+    charLinePoint++;
     for (size_t i = 0; i < words.size(); i++)
     {
-        if (charLinePoint + words[i].length() >= charWidth)
+        if (linesLeft >= 1)
         {
-            dialogStr += "\n ";
-            charLinePoint = 1;
-        }
+            /* code */
+            if (charLinePoint + words[i].length() >= charWidth)
+            {
+                // TODO
+                    // Add every line beforehand to an array. 
+                    // So we can just call line[2] for the second line
+                    // So we just print every line instead of every word
+                    /*
+                        just make this into a for-loop or an if-statement but throw the words into an array
 
-        std::string tempStr = words[i];
-        
-        for (size_t n = 0; n < words[i].length(); n++)
+                        TODO: WRITE PSEUDO CODE
+                    */
+                    //
+                    // Print out the array lines, and make it
+                    // scroolable with the arrow keys
+                    // 
+                
+                linesLeft--;
+                if (linesLeft >= 1)
+                {
+                    dialogStr += "\n ";
+                    charLinePoint = 1;
+                }
+            }
+
+            std::string tempStr = words[i];
+            if (linesLeft >= 1)
+            {
+                for (size_t n = 0; n < words[i].length(); n++)
+                {
+                    // add's the next char to dialogStr and prints the entire string.
+                    dialogStr += tempStr[n];
+                    std::system("clear");
+                    std::cout << dialogStr << "\n";
+                    
+                    // For debugging. 
+                    // Print it bellow the for loop, 
+                    // and set the size_t i = amount 
+                    // of lines you need for debugging
+                    for (size_t i = 0; i < linesLeft; i++)  
+                    {
+                        std::cout << "\n";
+                    }
+                    // std::cout << "linesLeft: " << linesLeft << "\n";
+                    std::cout << mainSeparatorToString();
+                    std::cout.flush();
+
+                    srand((time_t)ts.tv_nsec);
+
+                    // TODO: MAKE AN ENUM SWITCH CASE TO DETERMEN IF WE'RE USING THE FAST, NORMAL OR SLOW SPEED
+                    // 20 - 25 is fast
+                    // 50 is normal
+                    // 75 is slow
+                    std::this_thread::sleep_for(std::chrono::milliseconds(/*20+(rand()%30)*/0)); // Gives it this "typing" feal
+                    charLinePoint++;;
+                }
+                dialogStr += " ";
+                charLinePoint++;
+            }
+            
+        }
+        else
         {
-            /* dialogStr += tempStr[n];
-            std::system("clear");
-            str = dialogStr + "\n" + mainSeparatorToString();
-            std::cout << str;
-            std::cout.flush(); */
-
-            // add's the next char to dialogStr and prints the entire string.
-            dialogStr += tempStr[n];
-            std::system("clear");
-            std::cout << dialogStr << "\n" << mainSeparatorToString();
-            std::cout.flush();
-
-            srand((time_t)ts.tv_nsec);
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(20+(rand()%30)) ); // Gives it this "typing" feal
-            charLinePoint++;;
-            // charPoint++;
+            dialogStr += "\n ...";
+            break;
         }
-        dialogStr += " ";
-        charLinePoint++;
-        // charPoint++;
     }
+    
+    // If there is space left, this for loop filles the rest of the console with '\n'
+    for (size_t i = 0; i < linesLeft; i++)
+    {
+        dialogStr += "\n";
+    }
+    
     std::system("clear");
-    std::cout << dialogStr << "\n" << mainSeparatorToString() << std::endl;   
-    std::cout << "Name: " << name << std::endl;
-    std::cout << "String: " << string << std::endl;
+    std::cout << dialogStr << "\n" << mainSeparatorToString();
+    std::cout.flush();
 
-    // std::cout << std::endl;   
+    //              DEBUGGING               //
+    // std::cout << "Name: " << name << std::endl;
+    // std::cout << "String: " << string << std::endl;
+    //              DEBUGGING               //
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+
 }
 
 void menu::testSeparator(std::string str){

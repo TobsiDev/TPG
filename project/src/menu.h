@@ -19,8 +19,8 @@
 class menu
 {
 private:
-    short int charWidth = 32;
-    short int charHeight = 32;
+    short int charWidth = 80; // TODO: Find a good value
+    short int charHeight = 24; // I like 12, but idk if it's too small (ONLY FOR THE DIALOG STUFF. I ALSO NEED SPACE FOR MENU STUFF)
 
     std::string dialogLocation = "./dialogs/";
 
