@@ -318,6 +318,77 @@ void menu::dialogFixed(std::string fileName){
 
 }
 
+// This is for testing
+// I'm trying to make a vector store all the text a requested dialog have
+// and "pre-make" the lines in the vector 
+void menu::dialogFixedTwo(std::string fileName, std::vector<std::string> strVec){
+    // Who speaks and what's being said. It's getting it from a file
+    std::string name = "", string = "";
+    std::ifstream fileStream;
+    fileStream.open(dialogLocation+fileName);
+    getline(fileStream, name, '|');
+    for (size_t i = 0; i <= 1; i++)
+    {
+        getline(fileStream, string);
+    }
+
+    // The word list
+    std::vector<std::string> words;
+    chopString(string, words); // makes a list
+
+    std::vector<std::string> lines;
+
+    // TEST STUFF
+    lines.push_back(mainSeparatorToString());
+    lines.push_back(printNameToString(name));
+    // TEST STUFF
+    
+    int linePoint = 1;
+    int line = 0;
+    std::string str = " ";
+
+
+    for (size_t i = 0; i < words.size(); i++)
+    {
+        if (linePoint + words[i].length() < charWidth)
+        {
+            str += words[i];
+            // std::cout << "BEFORE" << str << std::endl;
+            linePoint += words[i].length();
+            str += " ";
+            // std::cout << "AFTER" << str << std::endl;
+            linePoint = linePoint+1;
+        }
+        else
+        {
+            // std::cout << "PUSH BACK" << std::endl;
+            lines.push_back(str);
+            str = " ";
+            // std::cout << str << std::endl;
+            linePoint = 1;
+        }
+        
+        
+        // lines.push_back();
+        // std::cout << words[i] << std::endl;
+    }
+
+    lines.push_back(str);
+    lines.push_back(mainSeparatorToString());
+    
+
+    for (size_t n = 0; n < lines.size(); n++)
+    {
+        std::cout << lines[n] << std::endl;
+    }
+
+    std::cout << lines.size() << std::endl;
+    
+
+    // std::cout << string << std::endl;
+
+}
+
 void menu::testSeparator(std::string str){
     std::cout << std::setw(charWidth) << std::setfill('=') << std::left << str << "[ " << "- - - -" << " ]" << std::endl;    
 }

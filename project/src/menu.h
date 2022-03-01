@@ -43,6 +43,7 @@ public:
     void dialog(std::string words);
     void dialogTwo(std::string name, std::string string);
     void dialogFixed(std::string fileName/*, std::string string*/);
+    void dialogFixedTwo(std::string fileName, std::vector<std::string> strVec/*, std::string string*/);
     
     void testSeparator(std::string str); // This will make a line of '=' at the top and bottom
 
