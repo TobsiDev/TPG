@@ -3,7 +3,7 @@
 <!-- https://github.com/TobsiDev/TPG // Link to repo -->
 
 This is a project for me to learn more about C++
-I'm using ```[GCC 11.1.0 x86_64-pc-linux-gnu]``` to compile the code.
+I'm using ```[GCC 11.2.0 x86_64-pc-linux-gnu]``` to compile the code.
 
 <!-- 
 If I make some dialog in the "game", I will have to include some G-Funk / Hip Hop dialog 

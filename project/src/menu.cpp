@@ -384,7 +384,7 @@ void menu::dialogFixedTwo(std::string fileName, std::vector<std::string> strVec)
 
     std::cout << lines.size() << std::endl;
     
-
+    testFunc();
     // std::cout << string << std::endl;
 
 }

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <iomanip> // std::setfill, std::setw
 #include <vector>
@@ -12,6 +13,8 @@
 
 #include <time.h>
 
+#include "inputManager.h"
+
 // #include <unistd.h>
 #include <chrono>
 #include <thread>
@@ -19,10 +22,11 @@
 class menu
 {
 private:
-    short int charWidth = 80; // TODO: Find a good value
-    short int charHeight = 24; // I like 12, but idk if it's too small (ONLY FOR THE DIALOG STUFF. I ALSO NEED SPACE FOR MENU STUFF)
+    // This is my consoles standart width and height
+    short int charWidth = 80;
+    short int charHeight = 24;
 
-    std::string dialogLocation = "./dialogs/";
+    std::string dialogLocation = "./dialogs/"; // Maybe do something like ./dialogs/person/lines.dia
 
     char mainSepChar = '=';
     /* data */

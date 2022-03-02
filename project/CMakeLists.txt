@@ -10,7 +10,7 @@ add_subdirectory(src) # Adds a subfolder here
 # you can add them here
 
 add_executable(TextPG main.cpp)
-target_link_libraries(TextPG PRIVATE src)
+target_link_libraries(TextPG PRIVATE src input)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
